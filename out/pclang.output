@@ -1,0 +1,1243 @@
+Terminals unused in grammar
+
+   T_OPEN_PARAN
+   T_CLOSE_PARAM
+   T_OPEN_CURLY
+   T_CLOSE_CURLY
+   T_OPEN_SQUARE
+   T_CLOSE_SQUARE
+   T_ASSIGN
+   T_SEMICOLON
+   T_COMMA
+   T_ELSE
+
+
+State 3 conflicts: 2 shift/reduce
+State 14 conflicts: 5 shift/reduce
+
+
+Grammar
+
+    0 $accept: program_def $end
+
+    1 program_def: prog_heading declarations main_block
+
+    2 prog_heading: T_PROGRAM T_ID ';'
+
+    3 declarations: %empty
+    4             | decl ';'
+    5             | declarations decl ';'
+
+    6 decl: T_DECLARE id_list T_AS type
+    7     | T_CONST T_ID '=' constant
+
+    8 constant: T_CONST_INT
+    9         | T_CONST_STR
+
+   10 id_list: T_ID
+   11        | T_ID ',' id_list
+
+   12 main_block: compound_stmt
+
+   13 compound_stmt: '{' stmt_seq '}'
+
+   14 stmt_seq: %empty
+   15         | stmt
+   16         | stmt_seq stmt
+
+   17 stmt: simple_stmt ';'
+   18     | structured_stmt
+
+   19 simple_stmt: assign_stmt
+   20            | io_stmt
+
+   21 structured_stmt: if_stmt
+   22                | while_stmt
+
+   23 assign_stmt: variable '=' expression
+
+   24 io_stmt: T_READ '(' variable ')'
+   25        | T_WRITE '(' variable ')'
+
+   26 if_stmt: T_IF '(' condition ')' stmt
+
+   27 while_stmt: T_WHILE '(' bool_expression ')' stmt
+
+   28 bool_expression: condition
+   29                | '(' bool_expression ')' bool_operator '(' bool_expression ')'
+
+   30 bool_operator: T_IS_NOT
+   31              | T_BOOL_AND
+   32              | T_BOOL_OR
+
+   33 condition: expression relational_operator expression
+
+   34 expression: term
+   35           | term arit_operator term
+
+   36 term: variable
+   37     | T_CONST_INT
+   38     | '(' expression ')'
+
+   39 relational_operator: T_EQUAL
+   40                    | T_NOT_EQUAL
+   41                    | T_LESS
+   42                    | T_LESS_OR_EQUAL
+   43                    | T_GREATER
+   44                    | T_GREATER_OR_EQUAL
+
+   45 arit_operator: T_ADD
+   46              | T_SUB
+   47              | T_MUL
+   48              | T_DIV
+   49              | T_MOD
+
+   50 variable: T_ID
+   51         | T_ID index_part
+
+   52 index_part: '[' expression ']'
+   53           | '[' expression ']' index_part
+
+   54 type: array_type
+   55     | scalar_type
+
+   56 scalar_type: T_INT
+   57            | T_CHAR
+
+   58 array_type: scalar_type array_dimensions
+
+   59 array_dimensions: '[' ']'
+   60                 | array_single_dimension
+   61                 | array_single_dimension array_single_dimension
+   62                 | array_single_dimension array_single_dimension array_single_dimension
+
+   63 array_single_dimension: '[' T_CONST_INT ']'
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'(' (40) 24 25 26 27 29 38
+')' (41) 24 25 26 27 29 38
+',' (44) 11
+';' (59) 2 4 5 17
+'=' (61) 7 23
+'[' (91) 52 53 59 63
+']' (93) 52 53 59 63
+'{' (123) 13
+'}' (125) 13
+error (256)
+T_PROGRAM (258) 2
+T_EQUAL (259) 39
+T_IS_NOT (260) 30
+T_NOT_EQUAL (261) 40
+T_BOOL_AND (262) 31
+T_BOOL_OR (263) 32
+T_OPEN_PARAN (264)
+T_CLOSE_PARAM (265)
+T_OPEN_CURLY (266)
+T_CLOSE_CURLY (267)
+T_OPEN_SQUARE (268)
+T_CLOSE_SQUARE (269)
+T_MUL (270) 47
+T_ADD (271) 45
+T_SUB (272) 46
+T_DIV (273) 48
+T_MOD (274) 49
+T_GREATER (275) 43
+T_GREATER_OR_EQUAL (276) 44
+T_LESS (277) 41
+T_LESS_OR_EQUAL (278) 42
+T_ASSIGN (279)
+T_SEMICOLON (280)
+T_COMMA (281)
+T_DECLARE (282) 6
+T_CONST (283) 7
+T_AS (284) 6
+T_READ (285) 24
+T_WRITE (286) 25
+T_WHILE (287) 27
+T_IF (288) 26
+T_ELSE (289)
+T_CHAR (290) 57
+T_INT (291) 56
+T_ID (292) 2 7 10 11 50 51
+T_CONST_INT (293) 8 37 63
+T_CONST_STR (294) 9
+
+
+Nonterminals, with rules where they appear
+
+$accept (49)
+    on left: 0
+program_def (50)
+    on left: 1, on right: 0
+prog_heading (51)
+    on left: 2, on right: 1
+declarations (52)
+    on left: 3 4 5, on right: 1 5
+decl (53)
+    on left: 6 7, on right: 4 5
+constant (54)
+    on left: 8 9, on right: 7
+id_list (55)
+    on left: 10 11, on right: 6 11
+main_block (56)
+    on left: 12, on right: 1
+compound_stmt (57)
+    on left: 13, on right: 12
+stmt_seq (58)
+    on left: 14 15 16, on right: 13 16
+stmt (59)
+    on left: 17 18, on right: 15 16 26 27
+simple_stmt (60)
+    on left: 19 20, on right: 17
+structured_stmt (61)
+    on left: 21 22, on right: 18
+assign_stmt (62)
+    on left: 23, on right: 19
+io_stmt (63)
+    on left: 24 25, on right: 20
+if_stmt (64)
+    on left: 26, on right: 21
+while_stmt (65)
+    on left: 27, on right: 22
+bool_expression (66)
+    on left: 28 29, on right: 27 29
+bool_operator (67)
+    on left: 30 31 32, on right: 29
+condition (68)
+    on left: 33, on right: 26 28
+expression (69)
+    on left: 34 35, on right: 23 33 38 52 53
+term (70)
+    on left: 36 37 38, on right: 34 35
+relational_operator (71)
+    on left: 39 40 41 42 43 44, on right: 33
+arit_operator (72)
+    on left: 45 46 47 48 49, on right: 35
+variable (73)
+    on left: 50 51, on right: 23 24 25 36
+index_part (74)
+    on left: 52 53, on right: 51 53
+type (75)
+    on left: 54 55, on right: 6
+scalar_type (76)
+    on left: 56 57, on right: 55 58
+array_type (77)
+    on left: 58, on right: 54
+array_dimensions (78)
+    on left: 59 60 61 62, on right: 58
+array_single_dimension (79)
+    on left: 63, on right: 60 61 62
+
+
+State 0
+
+    0 $accept: . program_def $end
+
+    T_PROGRAM  shift, and go to state 1
+
+    program_def   go to state 2
+    prog_heading  go to state 3
+
+
+State 1
+
+    2 prog_heading: T_PROGRAM . T_ID ';'
+
+    T_ID  shift, and go to state 4
+
+
+State 2
+
+    0 $accept: program_def . $end
+
+    $end  shift, and go to state 5
+
+
+State 3
+
+    1 program_def: prog_heading . declarations main_block
+
+    T_DECLARE  shift, and go to state 6
+    T_CONST    shift, and go to state 7
+
+    T_DECLARE  [reduce using rule 3 (declarations)]
+    T_CONST    [reduce using rule 3 (declarations)]
+    $default   reduce using rule 3 (declarations)
+
+    declarations  go to state 8
+    decl          go to state 9
+
+
+State 4
+
+    2 prog_heading: T_PROGRAM T_ID . ';'
+
+    ';'  shift, and go to state 10
+
+
+State 5
+
+    0 $accept: program_def $end .
+
+    $default  accept
+
+
+State 6
+
+    6 decl: T_DECLARE . id_list T_AS type
+
+    T_ID  shift, and go to state 11
+
+    id_list  go to state 12
+
+
+State 7
+
+    7 decl: T_CONST . T_ID '=' constant
+
+    T_ID  shift, and go to state 13
+
+
+State 8
+
+    1 program_def: prog_heading declarations . main_block
+    5 declarations: declarations . decl ';'
+
+    T_DECLARE  shift, and go to state 6
+    T_CONST    shift, and go to state 7
+    '{'        shift, and go to state 14
+
+    decl           go to state 15
+    main_block     go to state 16
+    compound_stmt  go to state 17
+
+
+State 9
+
+    4 declarations: decl . ';'
+
+    ';'  shift, and go to state 18
+
+
+State 10
+
+    2 prog_heading: T_PROGRAM T_ID ';' .
+
+    $default  reduce using rule 2 (prog_heading)
+
+
+State 11
+
+   10 id_list: T_ID .
+   11        | T_ID . ',' id_list
+
+    ','  shift, and go to state 19
+
+    $default  reduce using rule 10 (id_list)
+
+
+State 12
+
+    6 decl: T_DECLARE id_list . T_AS type
+
+    T_AS  shift, and go to state 20
+
+
+State 13
+
+    7 decl: T_CONST T_ID . '=' constant
+
+    '='  shift, and go to state 21
+
+
+State 14
+
+   13 compound_stmt: '{' . stmt_seq '}'
+
+    T_READ   shift, and go to state 22
+    T_WRITE  shift, and go to state 23
+    T_WHILE  shift, and go to state 24
+    T_IF     shift, and go to state 25
+    T_ID     shift, and go to state 26
+
+    T_READ    [reduce using rule 14 (stmt_seq)]
+    T_WRITE   [reduce using rule 14 (stmt_seq)]
+    T_WHILE   [reduce using rule 14 (stmt_seq)]
+    T_IF      [reduce using rule 14 (stmt_seq)]
+    T_ID      [reduce using rule 14 (stmt_seq)]
+    $default  reduce using rule 14 (stmt_seq)
+
+    stmt_seq         go to state 27
+    stmt             go to state 28
+    simple_stmt      go to state 29
+    structured_stmt  go to state 30
+    assign_stmt      go to state 31
+    io_stmt          go to state 32
+    if_stmt          go to state 33
+    while_stmt       go to state 34
+    variable         go to state 35
+
+
+State 15
+
+    5 declarations: declarations decl . ';'
+
+    ';'  shift, and go to state 36
+
+
+State 16
+
+    1 program_def: prog_heading declarations main_block .
+
+    $default  reduce using rule 1 (program_def)
+
+
+State 17
+
+   12 main_block: compound_stmt .
+
+    $default  reduce using rule 12 (main_block)
+
+
+State 18
+
+    4 declarations: decl ';' .
+
+    $default  reduce using rule 4 (declarations)
+
+
+State 19
+
+   11 id_list: T_ID ',' . id_list
+
+    T_ID  shift, and go to state 11
+
+    id_list  go to state 37
+
+
+State 20
+
+    6 decl: T_DECLARE id_list T_AS . type
+
+    T_CHAR  shift, and go to state 38
+    T_INT   shift, and go to state 39
+
+    type         go to state 40
+    scalar_type  go to state 41
+    array_type   go to state 42
+
+
+State 21
+
+    7 decl: T_CONST T_ID '=' . constant
+
+    T_CONST_INT  shift, and go to state 43
+    T_CONST_STR  shift, and go to state 44
+
+    constant  go to state 45
+
+
+State 22
+
+   24 io_stmt: T_READ . '(' variable ')'
+
+    '('  shift, and go to state 46
+
+
+State 23
+
+   25 io_stmt: T_WRITE . '(' variable ')'
+
+    '('  shift, and go to state 47
+
+
+State 24
+
+   27 while_stmt: T_WHILE . '(' bool_expression ')' stmt
+
+    '('  shift, and go to state 48
+
+
+State 25
+
+   26 if_stmt: T_IF . '(' condition ')' stmt
+
+    '('  shift, and go to state 49
+
+
+State 26
+
+   50 variable: T_ID .
+   51         | T_ID . index_part
+
+    '['  shift, and go to state 50
+
+    $default  reduce using rule 50 (variable)
+
+    index_part  go to state 51
+
+
+State 27
+
+   13 compound_stmt: '{' stmt_seq . '}'
+   16 stmt_seq: stmt_seq . stmt
+
+    T_READ   shift, and go to state 22
+    T_WRITE  shift, and go to state 23
+    T_WHILE  shift, and go to state 24
+    T_IF     shift, and go to state 25
+    T_ID     shift, and go to state 26
+    '}'      shift, and go to state 52
+
+    stmt             go to state 53
+    simple_stmt      go to state 29
+    structured_stmt  go to state 30
+    assign_stmt      go to state 31
+    io_stmt          go to state 32
+    if_stmt          go to state 33
+    while_stmt       go to state 34
+    variable         go to state 35
+
+
+State 28
+
+   15 stmt_seq: stmt .
+
+    $default  reduce using rule 15 (stmt_seq)
+
+
+State 29
+
+   17 stmt: simple_stmt . ';'
+
+    ';'  shift, and go to state 54
+
+
+State 30
+
+   18 stmt: structured_stmt .
+
+    $default  reduce using rule 18 (stmt)
+
+
+State 31
+
+   19 simple_stmt: assign_stmt .
+
+    $default  reduce using rule 19 (simple_stmt)
+
+
+State 32
+
+   20 simple_stmt: io_stmt .
+
+    $default  reduce using rule 20 (simple_stmt)
+
+
+State 33
+
+   21 structured_stmt: if_stmt .
+
+    $default  reduce using rule 21 (structured_stmt)
+
+
+State 34
+
+   22 structured_stmt: while_stmt .
+
+    $default  reduce using rule 22 (structured_stmt)
+
+
+State 35
+
+   23 assign_stmt: variable . '=' expression
+
+    '='  shift, and go to state 55
+
+
+State 36
+
+    5 declarations: declarations decl ';' .
+
+    $default  reduce using rule 5 (declarations)
+
+
+State 37
+
+   11 id_list: T_ID ',' id_list .
+
+    $default  reduce using rule 11 (id_list)
+
+
+State 38
+
+   57 scalar_type: T_CHAR .
+
+    $default  reduce using rule 57 (scalar_type)
+
+
+State 39
+
+   56 scalar_type: T_INT .
+
+    $default  reduce using rule 56 (scalar_type)
+
+
+State 40
+
+    6 decl: T_DECLARE id_list T_AS type .
+
+    $default  reduce using rule 6 (decl)
+
+
+State 41
+
+   55 type: scalar_type .
+   58 array_type: scalar_type . array_dimensions
+
+    '['  shift, and go to state 56
+
+    $default  reduce using rule 55 (type)
+
+    array_dimensions        go to state 57
+    array_single_dimension  go to state 58
+
+
+State 42
+
+   54 type: array_type .
+
+    $default  reduce using rule 54 (type)
+
+
+State 43
+
+    8 constant: T_CONST_INT .
+
+    $default  reduce using rule 8 (constant)
+
+
+State 44
+
+    9 constant: T_CONST_STR .
+
+    $default  reduce using rule 9 (constant)
+
+
+State 45
+
+    7 decl: T_CONST T_ID '=' constant .
+
+    $default  reduce using rule 7 (decl)
+
+
+State 46
+
+   24 io_stmt: T_READ '(' . variable ')'
+
+    T_ID  shift, and go to state 26
+
+    variable  go to state 59
+
+
+State 47
+
+   25 io_stmt: T_WRITE '(' . variable ')'
+
+    T_ID  shift, and go to state 26
+
+    variable  go to state 60
+
+
+State 48
+
+   27 while_stmt: T_WHILE '(' . bool_expression ')' stmt
+
+    T_ID         shift, and go to state 26
+    T_CONST_INT  shift, and go to state 61
+    '('          shift, and go to state 62
+
+    bool_expression  go to state 63
+    condition        go to state 64
+    expression       go to state 65
+    term             go to state 66
+    variable         go to state 67
+
+
+State 49
+
+   26 if_stmt: T_IF '(' . condition ')' stmt
+
+    T_ID         shift, and go to state 26
+    T_CONST_INT  shift, and go to state 61
+    '('          shift, and go to state 68
+
+    condition   go to state 69
+    expression  go to state 65
+    term        go to state 66
+    variable    go to state 67
+
+
+State 50
+
+   52 index_part: '[' . expression ']'
+   53           | '[' . expression ']' index_part
+
+    T_ID         shift, and go to state 26
+    T_CONST_INT  shift, and go to state 61
+    '('          shift, and go to state 68
+
+    expression  go to state 70
+    term        go to state 66
+    variable    go to state 67
+
+
+State 51
+
+   51 variable: T_ID index_part .
+
+    $default  reduce using rule 51 (variable)
+
+
+State 52
+
+   13 compound_stmt: '{' stmt_seq '}' .
+
+    $default  reduce using rule 13 (compound_stmt)
+
+
+State 53
+
+   16 stmt_seq: stmt_seq stmt .
+
+    $default  reduce using rule 16 (stmt_seq)
+
+
+State 54
+
+   17 stmt: simple_stmt ';' .
+
+    $default  reduce using rule 17 (stmt)
+
+
+State 55
+
+   23 assign_stmt: variable '=' . expression
+
+    T_ID         shift, and go to state 26
+    T_CONST_INT  shift, and go to state 61
+    '('          shift, and go to state 68
+
+    expression  go to state 71
+    term        go to state 66
+    variable    go to state 67
+
+
+State 56
+
+   59 array_dimensions: '[' . ']'
+   63 array_single_dimension: '[' . T_CONST_INT ']'
+
+    T_CONST_INT  shift, and go to state 72
+    ']'          shift, and go to state 73
+
+
+State 57
+
+   58 array_type: scalar_type array_dimensions .
+
+    $default  reduce using rule 58 (array_type)
+
+
+State 58
+
+   60 array_dimensions: array_single_dimension .
+   61                 | array_single_dimension . array_single_dimension
+   62                 | array_single_dimension . array_single_dimension array_single_dimension
+
+    '['  shift, and go to state 74
+
+    $default  reduce using rule 60 (array_dimensions)
+
+    array_single_dimension  go to state 75
+
+
+State 59
+
+   24 io_stmt: T_READ '(' variable . ')'
+
+    ')'  shift, and go to state 76
+
+
+State 60
+
+   25 io_stmt: T_WRITE '(' variable . ')'
+
+    ')'  shift, and go to state 77
+
+
+State 61
+
+   37 term: T_CONST_INT .
+
+    $default  reduce using rule 37 (term)
+
+
+State 62
+
+   29 bool_expression: '(' . bool_expression ')' bool_operator '(' bool_expression ')'
+   38 term: '(' . expression ')'
+
+    T_ID         shift, and go to state 26
+    T_CONST_INT  shift, and go to state 61
+    '('          shift, and go to state 62
+
+    bool_expression  go to state 78
+    condition        go to state 64
+    expression       go to state 79
+    term             go to state 66
+    variable         go to state 67
+
+
+State 63
+
+   27 while_stmt: T_WHILE '(' bool_expression . ')' stmt
+
+    ')'  shift, and go to state 80
+
+
+State 64
+
+   28 bool_expression: condition .
+
+    $default  reduce using rule 28 (bool_expression)
+
+
+State 65
+
+   33 condition: expression . relational_operator expression
+
+    T_EQUAL             shift, and go to state 81
+    T_NOT_EQUAL         shift, and go to state 82
+    T_GREATER           shift, and go to state 83
+    T_GREATER_OR_EQUAL  shift, and go to state 84
+    T_LESS              shift, and go to state 85
+    T_LESS_OR_EQUAL     shift, and go to state 86
+
+    relational_operator  go to state 87
+
+
+State 66
+
+   34 expression: term .
+   35           | term . arit_operator term
+
+    T_MUL  shift, and go to state 88
+    T_ADD  shift, and go to state 89
+    T_SUB  shift, and go to state 90
+    T_DIV  shift, and go to state 91
+    T_MOD  shift, and go to state 92
+
+    $default  reduce using rule 34 (expression)
+
+    arit_operator  go to state 93
+
+
+State 67
+
+   36 term: variable .
+
+    $default  reduce using rule 36 (term)
+
+
+State 68
+
+   38 term: '(' . expression ')'
+
+    T_ID         shift, and go to state 26
+    T_CONST_INT  shift, and go to state 61
+    '('          shift, and go to state 68
+
+    expression  go to state 94
+    term        go to state 66
+    variable    go to state 67
+
+
+State 69
+
+   26 if_stmt: T_IF '(' condition . ')' stmt
+
+    ')'  shift, and go to state 95
+
+
+State 70
+
+   52 index_part: '[' expression . ']'
+   53           | '[' expression . ']' index_part
+
+    ']'  shift, and go to state 96
+
+
+State 71
+
+   23 assign_stmt: variable '=' expression .
+
+    $default  reduce using rule 23 (assign_stmt)
+
+
+State 72
+
+   63 array_single_dimension: '[' T_CONST_INT . ']'
+
+    ']'  shift, and go to state 97
+
+
+State 73
+
+   59 array_dimensions: '[' ']' .
+
+    $default  reduce using rule 59 (array_dimensions)
+
+
+State 74
+
+   63 array_single_dimension: '[' . T_CONST_INT ']'
+
+    T_CONST_INT  shift, and go to state 72
+
+
+State 75
+
+   61 array_dimensions: array_single_dimension array_single_dimension .
+   62                 | array_single_dimension array_single_dimension . array_single_dimension
+
+    '['  shift, and go to state 74
+
+    $default  reduce using rule 61 (array_dimensions)
+
+    array_single_dimension  go to state 98
+
+
+State 76
+
+   24 io_stmt: T_READ '(' variable ')' .
+
+    $default  reduce using rule 24 (io_stmt)
+
+
+State 77
+
+   25 io_stmt: T_WRITE '(' variable ')' .
+
+    $default  reduce using rule 25 (io_stmt)
+
+
+State 78
+
+   29 bool_expression: '(' bool_expression . ')' bool_operator '(' bool_expression ')'
+
+    ')'  shift, and go to state 99
+
+
+State 79
+
+   33 condition: expression . relational_operator expression
+   38 term: '(' expression . ')'
+
+    T_EQUAL             shift, and go to state 81
+    T_NOT_EQUAL         shift, and go to state 82
+    T_GREATER           shift, and go to state 83
+    T_GREATER_OR_EQUAL  shift, and go to state 84
+    T_LESS              shift, and go to state 85
+    T_LESS_OR_EQUAL     shift, and go to state 86
+    ')'                 shift, and go to state 100
+
+    relational_operator  go to state 87
+
+
+State 80
+
+   27 while_stmt: T_WHILE '(' bool_expression ')' . stmt
+
+    T_READ   shift, and go to state 22
+    T_WRITE  shift, and go to state 23
+    T_WHILE  shift, and go to state 24
+    T_IF     shift, and go to state 25
+    T_ID     shift, and go to state 26
+
+    stmt             go to state 101
+    simple_stmt      go to state 29
+    structured_stmt  go to state 30
+    assign_stmt      go to state 31
+    io_stmt          go to state 32
+    if_stmt          go to state 33
+    while_stmt       go to state 34
+    variable         go to state 35
+
+
+State 81
+
+   39 relational_operator: T_EQUAL .
+
+    $default  reduce using rule 39 (relational_operator)
+
+
+State 82
+
+   40 relational_operator: T_NOT_EQUAL .
+
+    $default  reduce using rule 40 (relational_operator)
+
+
+State 83
+
+   43 relational_operator: T_GREATER .
+
+    $default  reduce using rule 43 (relational_operator)
+
+
+State 84
+
+   44 relational_operator: T_GREATER_OR_EQUAL .
+
+    $default  reduce using rule 44 (relational_operator)
+
+
+State 85
+
+   41 relational_operator: T_LESS .
+
+    $default  reduce using rule 41 (relational_operator)
+
+
+State 86
+
+   42 relational_operator: T_LESS_OR_EQUAL .
+
+    $default  reduce using rule 42 (relational_operator)
+
+
+State 87
+
+   33 condition: expression relational_operator . expression
+
+    T_ID         shift, and go to state 26
+    T_CONST_INT  shift, and go to state 61
+    '('          shift, and go to state 68
+
+    expression  go to state 102
+    term        go to state 66
+    variable    go to state 67
+
+
+State 88
+
+   47 arit_operator: T_MUL .
+
+    $default  reduce using rule 47 (arit_operator)
+
+
+State 89
+
+   45 arit_operator: T_ADD .
+
+    $default  reduce using rule 45 (arit_operator)
+
+
+State 90
+
+   46 arit_operator: T_SUB .
+
+    $default  reduce using rule 46 (arit_operator)
+
+
+State 91
+
+   48 arit_operator: T_DIV .
+
+    $default  reduce using rule 48 (arit_operator)
+
+
+State 92
+
+   49 arit_operator: T_MOD .
+
+    $default  reduce using rule 49 (arit_operator)
+
+
+State 93
+
+   35 expression: term arit_operator . term
+
+    T_ID         shift, and go to state 26
+    T_CONST_INT  shift, and go to state 61
+    '('          shift, and go to state 68
+
+    term      go to state 103
+    variable  go to state 67
+
+
+State 94
+
+   38 term: '(' expression . ')'
+
+    ')'  shift, and go to state 100
+
+
+State 95
+
+   26 if_stmt: T_IF '(' condition ')' . stmt
+
+    T_READ   shift, and go to state 22
+    T_WRITE  shift, and go to state 23
+    T_WHILE  shift, and go to state 24
+    T_IF     shift, and go to state 25
+    T_ID     shift, and go to state 26
+
+    stmt             go to state 104
+    simple_stmt      go to state 29
+    structured_stmt  go to state 30
+    assign_stmt      go to state 31
+    io_stmt          go to state 32
+    if_stmt          go to state 33
+    while_stmt       go to state 34
+    variable         go to state 35
+
+
+State 96
+
+   52 index_part: '[' expression ']' .
+   53           | '[' expression ']' . index_part
+
+    '['  shift, and go to state 50
+
+    $default  reduce using rule 52 (index_part)
+
+    index_part  go to state 105
+
+
+State 97
+
+   63 array_single_dimension: '[' T_CONST_INT ']' .
+
+    $default  reduce using rule 63 (array_single_dimension)
+
+
+State 98
+
+   62 array_dimensions: array_single_dimension array_single_dimension array_single_dimension .
+
+    $default  reduce using rule 62 (array_dimensions)
+
+
+State 99
+
+   29 bool_expression: '(' bool_expression ')' . bool_operator '(' bool_expression ')'
+
+    T_IS_NOT    shift, and go to state 106
+    T_BOOL_AND  shift, and go to state 107
+    T_BOOL_OR   shift, and go to state 108
+
+    bool_operator  go to state 109
+
+
+State 100
+
+   38 term: '(' expression ')' .
+
+    $default  reduce using rule 38 (term)
+
+
+State 101
+
+   27 while_stmt: T_WHILE '(' bool_expression ')' stmt .
+
+    $default  reduce using rule 27 (while_stmt)
+
+
+State 102
+
+   33 condition: expression relational_operator expression .
+
+    $default  reduce using rule 33 (condition)
+
+
+State 103
+
+   35 expression: term arit_operator term .
+
+    $default  reduce using rule 35 (expression)
+
+
+State 104
+
+   26 if_stmt: T_IF '(' condition ')' stmt .
+
+    $default  reduce using rule 26 (if_stmt)
+
+
+State 105
+
+   53 index_part: '[' expression ']' index_part .
+
+    $default  reduce using rule 53 (index_part)
+
+
+State 106
+
+   30 bool_operator: T_IS_NOT .
+
+    $default  reduce using rule 30 (bool_operator)
+
+
+State 107
+
+   31 bool_operator: T_BOOL_AND .
+
+    $default  reduce using rule 31 (bool_operator)
+
+
+State 108
+
+   32 bool_operator: T_BOOL_OR .
+
+    $default  reduce using rule 32 (bool_operator)
+
+
+State 109
+
+   29 bool_expression: '(' bool_expression ')' bool_operator . '(' bool_expression ')'
+
+    '('  shift, and go to state 110
+
+
+State 110
+
+   29 bool_expression: '(' bool_expression ')' bool_operator '(' . bool_expression ')'
+
+    T_ID         shift, and go to state 26
+    T_CONST_INT  shift, and go to state 61
+    '('          shift, and go to state 62
+
+    bool_expression  go to state 111
+    condition        go to state 64
+    expression       go to state 65
+    term             go to state 66
+    variable         go to state 67
+
+
+State 111
+
+   29 bool_expression: '(' bool_expression ')' bool_operator '(' bool_expression . ')'
+
+    ')'  shift, and go to state 112
+
+
+State 112
+
+   29 bool_expression: '(' bool_expression ')' bool_operator '(' bool_expression ')' .
+
+    $default  reduce using rule 29 (bool_expression)
