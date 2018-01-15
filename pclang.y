@@ -91,6 +91,7 @@ constant: T_CONST_INT
 
 id_list: T_ID
     | T_ID T_COMMA id_list
+    ;
 
 main_block: compound_stmt
     ;
