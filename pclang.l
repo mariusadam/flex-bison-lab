@@ -9,16 +9,16 @@ int line_num = 1;
 %%
 [ \t\r]          ;
 #.*\n   { ++line_num; } // skip line comments
-program { return T_PROGRAM; }
-const   { return T_CONST; }
-declare { return T_DECLARE; }
-as      { return T_AS; }
-read    { return T_READ; }
-write   { return T_WRITE; }
-while   { return T_WHILE; }
-if      { return T_IF; }
-char    { return T_CHAR; }
-int     { return T_INT; }
+(?i:program) { return T_PROGRAM; }
+(?i:const)   { return T_CONST; }
+(?i:declare) { return T_DECLARE; }
+(?i:as)      { return T_AS; }
+(?i:read)    { return T_READ; }
+(?i:write)   { return T_WRITE; }
+(?i:while)   { return T_WHILE; }
+(?i:if)      { return T_IF; }
+(?i:char)    { return T_CHAR; }
+(?i:int)     { return T_INT; }
 ";"       { return T_SEMICOLON; }
 "=="       { return T_EQUAL; }
 "!"       { return T_IS_NOT; }
@@ -47,7 +47,7 @@ int     { return T_INT; }
 
 [0-9]+ { yylval.i_val = atoi(yytext); return T_CONST_INT; }
 
-\"[^\n]*\"   {
+\"[^\n"]*\"   {
 	yylval.s_val = strdup(yytext);
 	return T_CONST_STR;
 }
