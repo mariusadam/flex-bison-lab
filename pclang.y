@@ -66,8 +66,8 @@ void yyerror(const char *s);
 
 %error-verbose
 
+// tried to implement if-else as stated at the following link, but unsuccessfully so far :(
 // http://epaperpress.com/lexandyacc/if.html
-%nonassoc T_IF
 
 %%
 // the first rule defined is the highest-level rule, which
