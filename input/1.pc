@@ -1,5 +1,24 @@
 program test;
 
-{
+# a comment
 
+declare a, b, c as int;
+declare output as char[];
+declare dd as int[10];
+
+const A = "string constant";
+
+{
+    read(a);
+    b = a + 1;
+    b = b - c;
+    output = "b is now: ";
+    write("output is modified");
+    write(output);
+    write(b + a);
+    write("");
+
+    if (1 + 2 > 4) {
+        write("1 + 2 > 4 is true");
+    }
 }

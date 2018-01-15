@@ -1,8 +1,5 @@
 %{
-#include <cstdio>
-#include <iostream>
-
-using namespace std;
+#include <stdio.h>
 
 // stuff from flex that bison needs to know about:
 extern "C" int yylex();
@@ -11,8 +8,6 @@ extern "C" FILE *yyin;
 extern int line_num;
 
 void yyerror(const char *s);
-
-#define YYDEBUG 1
 
 %}
 
@@ -35,7 +30,7 @@ void yyerror(const char *s);
 %token T_BOOL_AND
 %token T_BOOL_OR
 %token T_OPEN_PARAN
-%token T_CLOSE_PARAM
+%token T_CLOSE_PARAN
 %token T_OPEN_CURLY
 %token T_CLOSE_CURLY
 %token T_OPEN_SQUARE
@@ -59,7 +54,6 @@ void yyerror(const char *s);
 %token T_WRITE
 %token T_WHILE
 %token T_IF
-%token T_ELSE
 %token T_CHAR
 %token T_INT
 
@@ -70,6 +64,11 @@ void yyerror(const char *s);
 %token <i_val> T_CONST_INT
 %token <s_val> T_CONST_STR
 
+%error-verbose
+
+// http://epaperpress.com/lexandyacc/if.html
+%nonassoc T_IF
+
 %%
 // the first rule defined is the highest-level rule, which
 // is the whole program source code
@@ -78,13 +77,12 @@ program_def: prog_heading declarations main_block
 prog_heading: T_PROGRAM T_ID T_SEMICOLON
     ;
 
-declarations:
-    | decl T_SEMICOLON
+declarations: decl T_SEMICOLON
     | declarations decl T_SEMICOLON
     ;
 
 decl: T_DECLARE id_list T_AS type
-    | T_CONST T_ID '=' constant
+    | T_CONST T_ID T_ASSIGN constant
     ;
 
 constant: T_CONST_INT
@@ -92,20 +90,20 @@ constant: T_CONST_INT
     ;
 
 id_list: T_ID
-    | T_ID ',' id_list
+    | T_ID T_COMMA id_list
 
 main_block: compound_stmt
     ;
 
-compound_stmt: '{' stmt_seq '}'
+compound_stmt: T_OPEN_CURLY stmt_seq T_CLOSE_CURLY
     ;
-stmt_seq:
-    | stmt
+stmt_seq: stmt
     | stmt_seq stmt
     ;
 
 stmt: simple_stmt T_SEMICOLON
     | structured_stmt
+    | compound_stmt
     ;
 
 simple_stmt: assign_stmt
@@ -116,21 +114,25 @@ structured_stmt: if_stmt
     | while_stmt
     ;
 
-assign_stmt: variable '=' expression
+assign_stmt: variable T_ASSIGN assign_rhs
     ;
 
-io_stmt: T_READ '(' variable ')'
-    | T_WRITE '(' variable ')'
+assign_rhs: expression
+    | T_CONST_STR
     ;
 
-if_stmt: T_IF '(' condition ')' stmt
+io_stmt: T_READ T_OPEN_PARAN variable T_CLOSE_PARAN
+    | T_WRITE T_OPEN_PARAN assign_rhs T_CLOSE_PARAN
     ;
 
-while_stmt: T_WHILE '(' bool_expression ')' stmt
+if_stmt: T_IF T_OPEN_PARAN condition T_CLOSE_PARAN stmt
+    ;
+
+while_stmt: T_WHILE T_OPEN_PARAN bool_expression T_CLOSE_PARAN stmt
     ;
 
 bool_expression: condition
-    | '(' bool_expression ')' bool_operator '(' bool_expression ')'
+    | T_OPEN_PARAN bool_expression T_CLOSE_PARAN bool_operator T_OPEN_PARAN bool_expression T_CLOSE_PARAN
     ;
 
 bool_operator:  T_IS_NOT
@@ -143,11 +145,11 @@ condition: expression relational_operator expression
 
 expression: term
     | term arit_operator term
+    | T_OPEN_PARAN expression T_CLOSE_PARAN
     ;
 
 term: variable
     | T_CONST_INT
-    | '(' expression ')'
     ;
 
 relational_operator: T_EQUAL
@@ -169,8 +171,8 @@ variable: T_ID
     | T_ID index_part
     ;
 
-index_part: '[' expression ']'
-    | '[' expression ']' index_part
+index_part: T_OPEN_SQUARE expression T_CLOSE_SQUARE
+    | T_OPEN_SQUARE expression T_CLOSE_SQUARE index_part
     ;
 
 type: array_type
@@ -185,18 +187,19 @@ array_type: scalar_type array_dimensions
     ;
 
 
-array_dimensions: '[' ']'
+array_dimensions: T_OPEN_SQUARE T_CLOSE_SQUARE
     | array_single_dimension
     | array_single_dimension array_single_dimension
     | array_single_dimension array_single_dimension array_single_dimension
     ;
 
-array_single_dimension: '[' T_CONST_INT ']'
+array_single_dimension: T_OPEN_SQUARE T_CONST_INT T_CLOSE_SQUARE
     ;
 %%
 
 int main(int, char**) {
     printf("Debug is %d\n", YYDEBUG);
+    yydebug = 1;
 	// parse through the input until there is no more:
 	do {
 		yyparse();
@@ -205,7 +208,7 @@ int main(int, char**) {
 }
 
 void yyerror(const char *s) {
-	cout << "EEK, parse error on line " << line_num << "!  Message: " << s << endl;
+	printf("Parse error on line %d!  Message: %s\n", line_num, s);
 	// might as well halt now:
 	exit(-1);
 }

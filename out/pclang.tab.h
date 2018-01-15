@@ -52,7 +52,7 @@ extern int yydebug;
     T_BOOL_AND = 262,
     T_BOOL_OR = 263,
     T_OPEN_PARAN = 264,
-    T_CLOSE_PARAM = 265,
+    T_CLOSE_PARAN = 265,
     T_OPEN_CURLY = 266,
     T_CLOSE_CURLY = 267,
     T_OPEN_SQUARE = 268,
@@ -76,12 +76,11 @@ extern int yydebug;
     T_WRITE = 286,
     T_WHILE = 287,
     T_IF = 288,
-    T_ELSE = 289,
-    T_CHAR = 290,
-    T_INT = 291,
-    T_ID = 292,
-    T_CONST_INT = 293,
-    T_CONST_STR = 294
+    T_CHAR = 289,
+    T_INT = 290,
+    T_ID = 291,
+    T_CONST_INT = 292,
+    T_CONST_STR = 293
   };
 #endif
 
@@ -90,13 +89,13 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 24 "pclang.y" /* yacc.c:1909  */
+#line 19 "pclang.y" /* yacc.c:1909  */
 
 	int i_val;
 	float fval;
 	char *s_val;
 
-#line 100 "out/pclang.tab.h" /* yacc.c:1909  */
+#line 99 "out/pclang.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;
