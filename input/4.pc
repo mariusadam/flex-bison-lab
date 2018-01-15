@@ -23,23 +23,20 @@ declare aa as int[10];
     }
 
     a=a-1;
-    a =
-        a + 1
-        + b + 2;
+    a = (a + 1) + 2;
 
-    write(aa[10][1][as[aa[0]]]);
-    a = (1 && 0);
-    if(a== 1) write("ok"); else {write("notok");}
+    write(aa[10][1][aas[aa[0]]]);
+
 
     if (1 < 2) {
-        if (3 > 4 {
+        if (3 > 4) {
             if (2 == 2) {
                 if (a >= 1) {
                     if (b <= 10) {
                         if (a != b) {
                             while (b != a) {
                                 write("this is very nested");
-                                a = a + b - a + (1 + a * (b / ((1 + a % 3) * 2)));
+                                a = (a + b) - (a + ((1 + a) * (b / ((1 + (a % 3)) * 2))));
                             }
                         }
                     }

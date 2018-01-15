@@ -11,7 +11,14 @@ declare a,b,c as int;
 declare	aa as int[10];
 
 {
-    a = (1 + 0);
-    if(a == 1) write("ok"); else {write("no ok");}
+    a = (1 + 0) + b;
+
+    if (a > 1)
+        write("without braces");
+
+    if (b > 0) {
+        write("with braces");
+    }
+
 }
 

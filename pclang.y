@@ -145,11 +145,11 @@ condition: expression relational_operator expression
 
 expression: term
     | term arit_operator term
-    | T_OPEN_PARAN expression T_CLOSE_PARAN
     ;
 
 term: variable
     | T_CONST_INT
+    | T_OPEN_PARAN expression T_CLOSE_PARAN
     ;
 
 relational_operator: T_EQUAL
